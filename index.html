@@ -1,14 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
 <html>
   <head>
+
+    <!-- Basic Page Needs
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta charset="utf-8">
+    <title>Your page title here :)</title>
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!-- Mobile Specific Metas
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- FONT
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link href="//fonts.googleapis.com/css?family=Raleway:400,300,600" rel="stylesheet" type="text/css">
+
+    <!-- CSS
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/skeleton.css">
+
   </head>
 
   <body>
-    <video id="video" controls preload="metadata">
-       <source src="res/phortissimo-giddy_up.mp4" type="video/mp4">
-    </video>
-    <p id="subtitles">
-    </p>
 
+    <!-- Primary Page Layout
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+    <div class="container">
+      <div class="row">
+        <div class="two-thirds column">
+          <video id="video" controls preload="metadata">
+            <source src="res/phortissimo-giddy_up.mp4" type="video/mp4">
+          </video>
+        </div>
+        <div class="one-third column">
+          <p id="subtitles">
+            hihihihi
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Subtitle logic
+    –––––––––––––––––––––––––––––––––––––––––––––––––– -->
     <script type="text/javascript">
       // converts SRT timestamps into seconds
       var timestamp_regex = /(\d+):(\d+):(\d+),(\d+)/;
