@@ -1,0 +1,72 @@
+<html>
+  <head>
+  </head>
+
+  <body>
+    <video id="video" controls preload="metadata">
+       <source src="res/phortissimo-giddy_up.mp4" type="video/mp4">
+    </video>
+    <p id="subtitles">
+    </p>
+
+    <script type="text/javascript">
+      // converts SRT timestamps into seconds
+      var timestamp_regex = /(\d+):(\d+):(\d+),(\d+)/;
+      function timestamp2seconds(timestamp) {
+        var timestamp_parts = timestamp_regex.exec(timestamp);
+        return parseFloat(timestamp_parts[1]) * 60 * 60 
+            + parseFloat(timestamp_parts[2]) * 60
+            + parseFloat(timestamp_parts[3])
+            + parseFloat(timestamp_parts[4]) / 1000;
+      }
+
+      // returns the subtitle line corresponding to a given time
+      function findSubtitle(subtitles, time) {
+        for (subtitle_num in subtitles) {
+          var subtitle = subtitles[subtitle_num];
+          if (time >= subtitle[1] && time < subtitle[2]) {
+            return subtitle[0];
+          }
+        }
+      }
+
+      // load the subtitles file
+      var client = new XMLHttpRequest();
+      var subtitles = [];
+      client.open('GET', 'res/phortissimo-giddy_up-en.srt');
+      client.onreadystatechange = function() {
+        // could make this regex
+        var start_time, end_time, line;
+        var lines = client.responseText.split("\n");
+        for (line_num in lines) {
+          switch (line_num % 4) {
+            case 0:
+              break;
+            case 1:
+              var line_parts = lines[line_num].split(' --> ');
+              start_time = timestamp2seconds(line_parts[0]);
+              end_time = timestamp2seconds(line_parts[1]);
+              break;
+            case 2:
+              line = lines[line_num];
+              break;
+            case 3:
+              subtitles.push([line, start_time, end_time]);
+              break;
+          }
+        }
+        console.log(subtitles);
+      };
+      client.send();
+
+      document.addEventListener("DOMContentLoaded", function(event) {
+        // when the video is playing, fire time update events to sync the subtitles
+        var video_player = document.getElementById("video");
+        var subtitles_box = document.getElementById("subtitles")
+        video_player.addEventListener("timeupdate", function(event) {
+          subtitles_box.textContent = findSubtitle(subtitles, video_player.currentTime);
+        });
+      });
+    </script>
+  </body>
+</html>
