@@ -37,7 +37,6 @@
         </div>
         <div class="one-third column">
           <p id="subtitles">
-            hihihihi
           </p>
         </div>
       </div>
@@ -109,7 +108,7 @@
         for (subtitle_num in subtitles) {
           var subtitle = subtitles[subtitle_num];
           if (time >= subtitle[1] && time < subtitle[2]) {
-            return subtitle[0];
+            return [Number(subtitle_num), subtitle[0]];
           }
         }
       }
@@ -139,17 +138,29 @@
               break;
           }
         }
-        console.log(subtitles);
+
+        for (subtitle_num in subtitles) {
+          var subtitle_text = subtitles[subtitle_num][0];
+          var subtitle_line = document.createElement("p");
+          subtitle_line.textContent = subtitle_text;
+          console.log(subtitle_text);
+          subtitles_box.append(subtitle_line);
+        }
       };
       client.send();
 
       var video_player;
+      var subtitles_box;
       document.addEventListener("DOMContentLoaded", function(event) {
         // when the video is playing, fire time update events to sync the subtitles
         video_player = document.getElementById("video");
-        var subtitles_box = document.getElementById("subtitles")
+        subtitles_box = document.getElementById("subtitles");
         video_player.addEventListener("timeupdate", function(event) {
-          subtitles_box.textContent = findSubtitle(subtitles, video_player.currentTime);
+          var subtitle_found = findSubtitle(subtitles, video_player.currentTime);
+          if (subtitle_found) {
+            var subtitle_num = subtitle_found[0];
+            subtitles_box.childNodes[subtitle_num+1].style.fontWeight = 900;
+          }
         });
       });
     </script>
