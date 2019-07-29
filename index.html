@@ -29,11 +29,16 @@
 
     <!-- Primary Page Layout
     –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+
     <div class="container">
+      <div class="row" style="position: -webkit-sticky; position: sticky; top: 0;">
+        <div id="video">
+        </div>
+      </div>
+
       <div class="row">
         <div class="two-thirds column">
-          <div id="video">
-          </div>
+          <p></p>
         </div>
         <div class="one-third column">
           <p id="subtitles">
@@ -151,6 +156,7 @@
 
       var video_player;
       var subtitles_box;
+      var prev_subtitle_num = 1;
       document.addEventListener("DOMContentLoaded", function(event) {
         // when the video is playing, fire time update events to sync the subtitles
         video_player = document.getElementById("video");
@@ -158,8 +164,13 @@
         video_player.addEventListener("timeupdate", function(event) {
           var subtitle_found = findSubtitle(subtitles, video_player.currentTime);
           if (subtitle_found) {
-            var subtitle_num = subtitle_found[0];
-            subtitles_box.childNodes[subtitle_num+1].style.fontWeight = 900;
+            subtitles_box.childNodes[prev_subtitle_num].style.fontWeight = 300;
+
+            var subtitle_num = subtitle_found[0] + 1;
+            subtitles_box.childNodes[subtitle_num].style.fontWeight = 900;
+            subtitles_box.childNodes[subtitle_num].scrollIntoView();
+
+            prev_subtitle_num = subtitle_num;
           }
         });
       });
