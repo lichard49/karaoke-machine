@@ -73,9 +73,14 @@
         event.target.playVideo();
       }
 
+      var prevTime = 0;
       function updateTime() {
-        video_player.currentTime = player.getCurrentTime();
-        video_player.dispatchEvent(new Event("timeupdate"));
+        var currentTime = player.getCurrentTime();
+        if (currentTime != prevTime) {
+          video_player.currentTime = currentTime;
+          video_player.dispatchEvent(new Event("timeupdate"));
+          prevTime = currentTime;
+        }
       }
 
       // 5. The API calls this function when the player's state changes.
