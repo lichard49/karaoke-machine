@@ -73,11 +73,17 @@
         event.target.playVideo();
       }
 
+      function updateTime() {
+        video_player.currentTime = player.getCurrentTime();
+        video_player.dispatchEvent(new Event("timeupdate"));
+      }
+
       // 5. The API calls this function when the player's state changes.
       //    The function indicates that when playing a video (state=1),
       //    the player should play for six seconds and then stop.
       function onPlayerStateChange(event) {
         if (event.data == YT.PlayerState.PLAYING) {
+          setInterval(updateTime, 500);
         }
       }
 
@@ -132,9 +138,10 @@
       };
       client.send();
 
+      var video_player;
       document.addEventListener("DOMContentLoaded", function(event) {
         // when the video is playing, fire time update events to sync the subtitles
-        var video_player = document.getElementById("video");
+        video_player = document.getElementById("video");
         var subtitles_box = document.getElementById("subtitles")
         video_player.addEventListener("timeupdate", function(event) {
           subtitles_box.textContent = findSubtitle(subtitles, video_player.currentTime);
